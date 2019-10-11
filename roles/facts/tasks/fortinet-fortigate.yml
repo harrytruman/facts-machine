@@ -1,0 +1,9 @@
+---
+- name: Gather Fortinet facts
+  fortimgr_facts:
+    provider: "{{ fmgr_connection }}"
+    config_filter:
+      - address
+      - address_group
+    adoms: "all"
+    #fortigates: "all"

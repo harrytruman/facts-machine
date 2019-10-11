@@ -1,0 +1,106 @@
+---
+#
+# Palo Alto network_facts role tasks.
+#
+# File name:    paloalto-pa.yml
+# Dependencies: panos_op.py Ansible module (https://github.com/PaloAltoNetworks/ansible-pan/blob/develop/library/panos_op.py)
+#               pan-python Python package (https://pypi.python.org/pypi/pan-python)
+#               pandevice Python package (https://pypi.python.org/pypi/pandevice)
+#               Valid SSL certificates properly installed on the Palo Alto devices with device shortname listed
+#               in the SAN (Subject Alternative Name).
+#
+# Facts gathered by these tasks:
+#   - Software version number
+#   - Device running config
+#
+# Notes:        Since not all Palo Alto devices have proper SSL certificates generated and installed, a run-time
+#               variable {{ https_verify }} is used here to by-pass the default certificate verification process.
+#               When https_verify is set to "0", SSL certificate verification process will be by-passed. [Default: "1"]
+#
+
+- debug:
+    msg: "START paloalto-pa.yml - {{ inventory_hostname }}"
+
+# Override the PYTHONHTTPSVERIFY OS environment variable if https_verify is defined
+- name: Override the PYTHONHTTPSVERIFY OS environment variable
+  set_fact:
+    https_verify: "{{ https_verify | default('1') }}"
+
+#
+# Execute show commands.
+#
+- name: Execute show commands to collect device info
+  panos_op:
+    cmd: "show system info"
+    username: "{{ cli_username }}"
+    password: "{{ cli_password }}"
+    ip_address: "{{ ansible_host }}"
+  environment:
+    PYTHONHTTPSVERIFY: "{{ https_verify }}"
+  register: sysinfo_output
+  changed_when: false
+  # 'show' command should be executed even in check mode.
+  check_mode: no
+
+- name: Execute show commands to collect device config
+  panos_op:
+    cmd: "show config running"
+    username: "{{ cli_username }}"
+    password: "{{ cli_password }}"
+    ip_address: "{{ ansible_host }}"
+  environment:
+    PYTHONHTTPSVERIFY: "{{ https_verify }}"
+  register: config_output
+  changed_when: false
+  # 'show' command should be executed even in check mode.
+  check_mode: no
+
+#
+# Set common facts
+#
+- name: set version fact
+  set_fact:
+    version: "{{ (sysinfo_output.stdout | from_json)['response']['result']['system']['sw-version'] }}"
+  when: sysinfo_output.stdout is defined
+
+# - name: set model number fact
+#   set_fact:
+#     model_number: "{{ (sysinfo_output.stdout | from_json)['response']['result']['system']['model'] }}"
+#   when: sysinfo_output.stdout is defined
+#
+# - name: set serial number fact
+#   set_fact:
+#     serial_number: "{{ (sysinfo_output.stdout | from_json)['response']['result']['system']['serial'] }}"
+#   when: sysinfo_output.stdout is defined
+
+- name: set config fact
+  set_fact:
+    config: "{{ config_output.stdout }}"
+  when: config_output.stdout is defined
+
+- name: set config_lines fact
+  set_fact:
+    config_lines: "{{ config_output.stdout_lines }}"
+  when: config_output.stdout_lines is defined
+
+# The following variables are created to make playbooks more readable.
+- name: set the config_system fact
+  set_fact:
+    config_system: "{{ config.response.result.config.devices.entry.deviceconfig.system }}"
+  when:
+    - config is defined
+    - config.response.result.config.devices.entry.deviceconfig.system is defined
+
+- name: set the config_logsettings fact
+  set_fact:
+    config_logsettings: "{{ config.response.result.config.shared['log-settings'] }}"
+  when:
+    - config is defined
+    - config.response.result.config.shared['log-settings'] is defined
+
+- name: set the config_serverprofile fact
+  set_fact:
+    config_serverprofile: "{{ config.response.result.config.shared['server-profile'] }}"
+  when:
+    - config is defined
+    - config.response.result.config.shared['server-profile'] is defined

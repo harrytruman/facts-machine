@@ -1,0 +1,12 @@
+---
+- name: collect device facts and display OS version
+  hosts: "{{ survey_hosts | lower }}"
+  gather_facts: yes
+  connection: network
+
+  roles:
+    - role: network_facts
+
+  tasks:
+    - debug:
+        msg: "Node {{ inventory_hostname }} is type {{ device_os }} running software version {{ version }}"

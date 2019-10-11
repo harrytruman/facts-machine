@@ -1,0 +1,8 @@
+---
+device_os: undefined
+cli_nexus_long_timeout:
+  host: "{{ inventory_hostname }}"
+  username: "{{ cli_username }}"
+  password: "{{ cli_password }}"
+  transport: cli
+  timeout: 180
