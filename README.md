@@ -1,5 +1,8 @@
-Network Facts
+Facts Machine
 =========
+
+Network Facts
+-------------
 
 This role gathers facts about network devices to be used as backups/restores, later in other roles or playbooks, and in the creation of a network CMDB.
 
