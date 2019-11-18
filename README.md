@@ -56,17 +56,26 @@ The `cli` variable holds the credentials and transport type to connect to the de
 The `device_os` variable is the type of device OS that the current host is. We use this to decide which tasks and templates to run since each OS can have OS specific commands. This should be coming from a group var.
 
 
-## Ansible Fact Collection at Scale
+## Ansible at Scale
 
-It’s important to differentiate that Ansible/Tower operates somewhat differently when configuring cloud/network devices, compared to when performing traditional OS management. When Ansible runs against an OS like Linux/Windows, the remote hosts receive commands and process their own data and state changes. As an example with a Linux host, a standard log analysis playbook would be executed on the remote host; upon completion, only task results are sent back to Ansible.
+### How Ansible Works: Network vs OS
 
-Network devices, on the other hand, don’t perform their own data processing, and are often only sending command output back to Ansible for all data processing to be performed locally. Rather than being able to rely on remote devices to do their own work, Ansible handles all network data processing as it’s received from remote devices.
+It’s important to differentiate that Ansible/Tower operates somewhat differently when configuring network and devices, compared to when performing traditional OS management. When Ansible runs against a proper OS like Linux/Windows, the remote hosts have Python/Bash, and they both receive commands and process their own data and state changes. As an example with a Linux host, a standard logging service configuration playbook would be fully executed on the remote host; upon completion, only task results are sent back to Ansible.
 
-In the pursuit of scaling Ansible Tower to manage network devices, we must consider a number of factors that will directly impact job performance:
-Frequency and extent of orchestrating/scheduling device changes
-Device configuration size (raw text output from `show run`, etc..)
-Inventory sizes and devices families, e.g. IOS, NXOS, XR
-Implementation and availability of Ansible network facts 
+Network devices, on the other hand, rarely perform their own data processing. Until quite recently, very few network devices were built to have APIs -- much less Python. This presents a problem for any external configuration or management system. Things like SNMP address some parts of this problem by allowing some aspects of configuration and device state to be set or polled, but the vast majority of networks are managed via good ol' fashioned screen scrapes and command orchestration scripts.
+
+Ansible helps solve the problem of communicating with every device on your network. But even though this is the 21st century, network command orchestration is still accomplished primarily by sending commands to devices and having those devices return output back to Ansible. Over and over. Rather than being able to rely on remote devices to do their own work, Ansible handles all network data processing as it’s received from remote devices. For most network environments, all data processing will to be performed locally on Ansible/Tower. 
+
+#### Fact Collection at Scale
+
+Ansible helps solve the problem of communicating with every device on your network. But even though this is the 21st century, network command orchestration is still accomplished primarily by sending commands to devices and having those devices return output back to Ansible. Over and over. Rather than being able to rely on remote devices to do their own work, Ansible handles all network data processing as it’s received from remote devices. For most network environments, all data processing will to be performed locally on Ansible/Tower. 
+
+In the pursuit of scaling Ansible/Tower to manage large network device inventories, we must consider a number of factors that will directly impact job performance:
+
+  1. Frequency and extent of orchestrating/scheduling device changes
+  2. Device configuration size (raw text output from `show run`, etc..)
+  3. Inventory sizes and devices families, e.g. IOS, NXOS, XR
+  4. Implementation and availability of Ansible network facts modules, parsers, and fact caching
 
 ### Storing and Using Facts
 
