@@ -1,10 +1,9 @@
-# Facts Machine
-=========
-
-## Network Facts
+# Facts Machine -- Network Fact Collection for Ansible/Tower
 -------------
 
-This role gathers Ansible Facts, sets custom facts, and parses command output to find useful config bits about network devices. Once gathered, Ansible Facts can be used as backups/restores, they can be called later in other roles or playbooks, and they can be used to build the framework of a network CMDB.
+This role gathers Ansible Facts, sets custom facts, and parses command output to find useful config bits about network devices.
+
+Once gathered, Ansible Facts can be used as backups/restores, they can be called later in other roles or playbooks, and they can be used to build the framework of a network CMDB.
 
 ## Setting Custom Ansible Facts
 
@@ -50,8 +49,28 @@ This will run one command (`show sys license`) and set two facts: one for when t
 ```
 
 
-###Role Variables
+### Role Variables
 --------------
 
 The `cli` variable holds the credentials and transport type to connect to the device.
 The `device_os` variable is the type of device OS that the current host is. We use this to decide which tasks and templates to run since each OS can have OS specific commands. This should be coming from a group var.
+
+
+## Ansible Fact Collection at Scale
+
+It’s important to differentiate that Ansible/Tower operates somewhat differently when configuring cloud/network devices, compared to when performing traditional OS management. When Ansible runs against an OS like Linux/Windows, the remote hosts receive commands and process their own data and state changes. As an example with a Linux host, a standard log analysis playbook would be executed on the remote host; upon completion, only task results are sent back to Ansible.
+
+Network devices, on the other hand, don’t perform their own data processing, and are often only sending command output back to Ansible for all data processing to be performed locally. Rather than being able to rely on remote devices to do their own work, Ansible handles all network data processing as it’s received from remote devices.
+
+In the pursuit of scaling Ansible Tower to manage network devices, we must consider a number of factors that will directly impact job performance:
+Frequency and extent of orchestrating/scheduling device changes
+Device configuration size (raw text output from `show run`, etc..)
+Inventory sizes and devices families, e.g. IOS, NXOS, XR
+Implementation and availability of Ansible network facts 
+
+### Storing and Using Facts
+
+Tower is not ideal for storing/retrieving facts in large scale environments. Simply put, processing all of these local facts will tremendously slow down Tower. Additionally, any CMDB and Source of Truth should be implemented external to Tower.
+
+Because of this, I use an ELK cluster to store Tower logs and Ansible Facts:
+https://github.com/harrytruman/elk-ansible
