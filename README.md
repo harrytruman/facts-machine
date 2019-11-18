@@ -1,7 +1,7 @@
-# Facts Machine -- Network Fact Collection for Ansible/Tower
+# Network Fact Collection for Ansible/Tower
 -------------
 
-This role gathers Ansible Facts, sets custom facts, and parses command output to find useful config bits about network devices.
+The Facts Machine is a role gathers Ansible Facts, sets custom facts, and parses command output to find useful config bits about network devices.
 
 Once gathered, Ansible Facts can be used as backups/restores, they can be called later in other roles or playbooks, and they can be used to build the framework of a network CMDB.
 
