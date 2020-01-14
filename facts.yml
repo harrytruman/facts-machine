@@ -2,7 +2,7 @@
 - name: collect device facts and running configs
   hosts: all
   gather_facts: yes
-  connection: network
+  connection: network_cli
 
   roles:
     - role: network-facts
