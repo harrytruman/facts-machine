@@ -1,13 +1,47 @@
 # Facts Machine: Network Fact Collection for Ansible/Tower
 -------------
 
-The Facts Machine is a role gathers Ansible Facts, sets custom facts, and parses command output to find useful config bits about network devices.
+The Facts Machine is a role gathers Ansible Facts, sets custom facts, and parses command output to turn device configurations into code. Once gathered, facts can be used as backups/restores, or called later as variables in other roles or playbooks. And most importantly, they can be used to build the framework of a network CMDB.
 
-Once gathered, Ansible Facts can be used as backups/restores, they can be called later in other roles or playbooks, and they can be used to build the framework of a network CMDB.
+This role will pass through the `ansible_network_os` inventory variable to a series of playbooks based on that device OS. Currently, this role will gather facts from the following platforms:
+
+```
+eos
+ios
+iosxr
+nxos
+aruba
+ciscowlan
+f5-os
+fortimgr
+junos
+paloalto
+vyos
+```
+
+## Ansible Network Fact Collection
+
+Ansible's native fact gathering can be invoked quite simply by setting `gather_facts: true` in your top level playbook. Additionally, you can gather facts through a playbook task. For instance, `ios_facts`, `eos_facts`, `nxos_facts`, `junos_facts`, etc... Every major networking vendor has a fact module.
+
+Here's an example of gathering facts on a Cisco IOS device. This will create a backup of the full running config, and parse config subsets into a platform-agnostic data model:
+
+```
+- name: collect device facts and running configs
+  hosts: all
+  gather_facts: yes
+  connection: network_cli
+
+  tasks:
+  - name: gather ios facts
+    ios_facts:
+      gather_subset: all
+```
 
 ## Setting Custom Ansible Facts
 
-Any command output can be parsed and set as a fact. Here's an example of how to set a custom fact for Cisco IOS versions. This will run `show version`, strip out everything except the firmware version info, and save it as the variable `cisco-ios-version`.
+You can also run custom commands, save the output, and parse the configuration later. Any command output can be parsed and set as a fact!
+
+Here's an example of how to set a custom fact for Cisco IOS versions. This will run `show version`, find the version information, and save it as the variable `cisco-ios-version`.
 
 ```
 - name: run `show version` command
@@ -21,9 +55,7 @@ Any command output can be parsed and set as a fact. Here's an example of how to 
     cisco-ios-version: "{{ output.stdout[0] | regex_search('Version (\\S+)', '\\1') | first }}"
 ```
 
-Setting custom facts works particularly well for device info that isn't gathered by default through native Ansible fact collection modules. For instance, F5 natively gathers the attached license, but not much else. So you may want to find and set a fact for custom F5 license info.
-
-This will run one command (`show sys license`) and set two facts: one for when the device was licensed, and another for the service check date. 
+Setting custom facts works particularly well for building out infrastructure checks/verifications. For instance, F5 natively gathers the attached license, but you can identify additional content that will help you automate expiration/renewal processes. As an example, this will run one command (`show sys license`) and set two facts: one for when the device was licensed, and another for the service check date:
 
 ```
 - name: get license information - {{ inventory_hostname }}
@@ -52,8 +84,7 @@ This will run one command (`show sys license`) and set two facts: one for when t
 ### Role Variables
 --------------
 
-The `cli` variable holds the credentials and transport type to connect to the device.
-The `device_os` variable is the type of device OS that the current host is. We use this to decide which tasks and templates to run since each OS can have OS specific commands. This should be coming from a group var.
+The `ansible_network_os` variable is the type of device OS that the current host is. We use this to decide which tasks and templates to run since each OS can have OS specific commands. This should be coming from an inventory or group variable.
 
 
 ## Ansible at Scale
@@ -109,6 +140,7 @@ EOS:        8
 XR:         10
 NXOS:       12
 ```
+
 From the results at the time of testing, doing `show run` to create a config fact/backup takes 2-3 seconds for a single, modern IOS/XE device. That will vary, however, depending on the complexity of the config and the firmware versions. Older firmware versions perform far slower (5-10 seconds). And other network families differ entirely. Compared to IOS completing a simple config backup in 2-3 seconds, NXOS takes 10-15 seconds, IOS-XR takes 8-12 seconds, EOS takes 6-10 seconds, etc…
 
 
