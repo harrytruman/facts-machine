@@ -1,8 +1,0 @@
----
-- name: backup device config
-  aruba_config:
-    backup: yes
-  register: backup_location
-
-- debug:
-    msg: {{ backup_location }}
