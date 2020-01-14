@@ -1,0 +1,7 @@
+---
+- name: backup f5 config
+  bigip_config:
+    server: "{{ inventory_hostname }}"
+    password: "{{ ansible_password }}"
+    user: "{{ ansible_username }}"
+    save: true

@@ -1,0 +1,8 @@
+---
+- name: backup device config
+  vyos_config:
+    backup: yes
+  register: backup_location
+
+- debug:
+    msg: {{ backup_location }}
