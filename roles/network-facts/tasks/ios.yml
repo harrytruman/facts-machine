@@ -8,6 +8,10 @@
     provider: "{{ cli }}"
   register: output
 
+- name:
+  ios_facts:
+    gather_subset: all
+
 - name: set version fact
   set_fact:
     version: "{{ output.stdout[0] | regex_search('Version (\\S+)', '\\1') | first }}"

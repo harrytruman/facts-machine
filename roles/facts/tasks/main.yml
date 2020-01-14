@@ -1,8 +1,0 @@
----
-- name: "include {{ device_os }} tasks"
-  include_tasks: "{{ item }}"
-  with_first_found:
-    - files: "{{ device_os }}.yml"
-      skip: true
-      paths: tasks
-

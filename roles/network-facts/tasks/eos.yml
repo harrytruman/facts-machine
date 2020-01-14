@@ -8,8 +8,9 @@
     provider: "{{ cli }}"
   register: output
 
-# common facts
-#
+- name:
+  eos_facts:
+    gather_subset: all
 
 - name: set version fact
   set_fact:
@@ -19,8 +20,6 @@
   set_fact:
     config: "{{ output.stdout[1] }}"
 
-# Gets the first item of stdout (should only be 1) and splits it on whitespace into a list.
-# The first item in that list will be the management interface name.
 - name: set management interface name fact
   set_fact:
     mgmt_interface_name: "{{ output.stdout[2].split()[0] }}"

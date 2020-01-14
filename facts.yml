@@ -1,12 +1,12 @@
 ---
-- name: collect device facts and display OS version
-  hosts: "{{ survey_hosts | lower }}"
+- name: collect device facts and running configs
+  hosts: all
   gather_facts: yes
   connection: network
 
   roles:
-    - role: network_facts
+    - role: network-facts
 
   tasks:
     - debug:
-        msg: "Node {{ inventory_hostname }} is type {{ device_os }} running software version {{ version }}"
+        msg: "Device {{ inventory_hostname }} is type {{ ansible_network_os }} running software version {{ version }}"

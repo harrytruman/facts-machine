@@ -1,0 +1,4 @@
+- name: junos facts
+  junos_facts:
+    gather_subset: all
+    gather_network_resources: all

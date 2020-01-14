@@ -7,6 +7,10 @@
     provider: "{{ cli_nexus_long_timeout }}"
   register: output
 
+- name:
+  nxos_facts:
+    gather_subset: all
+
 - name: set version fact
   set_fact:
     version: "{{ output.stdout[0] | regex_findall('version\\s+(\\S+)') | first }}"
