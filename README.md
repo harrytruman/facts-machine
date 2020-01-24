@@ -170,6 +170,7 @@ With a full inventory size of 15k+ devices, (10k ios, 3k nxos, 700 xr, 500 eos, 
 
 Tower is not ideal for collecting, storing, and retrieving facts in environments with large inventories. Simply put, processing all of these local facts will put a tremendous strain on Tower. Additionally, any CMDB and Source of Truth should be implemented external to Tower.
 
-Because of this, I use an ELK cluster to store Tower logs and Ansible Facts:
+Use something like an ELK cluster to store Tower logs and Ansible Facts:
+
 https://github.com/harrytruman/elk-ansible
 
