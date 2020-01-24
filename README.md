@@ -122,9 +122,14 @@ Ansible can collect device facts -- useful variables about remote hosts that can
 
 ### Network Facts: Speed and Performance
 
-Considering how the uniqueness of every network will affect Ansible performance, it’s difficult to propose a fact collection run time expectation. What I suggest is performing a baseline performance test on your fact roles. I captured simple job run times from an array of fact collection and device configuration roles.
+Get into a habit of routinely checking your playbook runtime. Basline peformance testing is your friend.
 
-That said, there are some general principles and guidelines. To start, IOS and EOS are the fastest, XR and NXOS are the slowest. For a better example, here are some base numbers from my individual peformance testing results:
+```
+#ansible.cfg
+callback_whitelist = profile_tasks, timer
+```
+
+That said, there are some general principles and guidelines. To start, IOS and EOS are the fastest, XR and NXOS are the slowest. For a better example, here are some base numbers from my individual peformance testing results. I captured simple job run times from an array of fact collection and device configuration roles:
 
 ##### Facts - Single Host
 
