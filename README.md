@@ -11,7 +11,7 @@ ios
 iosxr
 nxos
 aruba
-ciscowlan
+aireos
 f5-os
 fortimgr
 junos
