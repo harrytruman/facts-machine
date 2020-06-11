@@ -5,12 +5,20 @@
       - show version
       - show running-config
       - show ip interface brief | include {{ ansible_host }}
-    provider: "{{ cli }}"
   register: output
 
-- name:
+- name: ios facts
   ios_facts:
     gather_subset: all
+    gather_network_resources: interfaces
+
+- name: print ansible facts
+  debug:
+    var: ansible_facts
+
+- name: print hostvars
+  debug:
+    var: hostvars
 
 - name: set version fact
   set_fact:
