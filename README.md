@@ -11,7 +11,7 @@ ios
 iosxr
 nxos
 aruba
-ciscowlan
+aireos
 f5-os
 fortimgr
 junos
@@ -122,9 +122,14 @@ Ansible can collect device facts -- useful variables about remote hosts that can
 
 ### Network Facts: Speed and Performance
 
-Considering how the uniqueness of every network will affect Ansible performance, it’s difficult to propose a fact collection run time expectation. What I suggest is performing a baseline performance test on your fact roles. I captured simple job run times from an array of fact collection and device configuration roles.
+Get into a habit of routinely checking your playbook runtime. Basline peformance testing is your friend.
 
-That said, there are some general principles and guidelines. To start, IOS and EOS are the fastest, XR and NXOS are the slowest. For a better example, here are some base numbers from my individual peformance testing results:
+```
+#ansible.cfg
+callback_whitelist = profile_tasks, timer
+```
+
+That said, there are some general principles and guidelines. To start, IOS and EOS are the fastest, XR and NXOS are the slowest. For a better example, here are some base numbers from my individual peformance testing results. I captured simple job run times from an array of fact collection and device configuration roles:
 
 ##### Facts - Single Host
 
@@ -165,6 +170,7 @@ With a full inventory size of 15k+ devices, (10k ios, 3k nxos, 700 xr, 500 eos, 
 
 Tower is not ideal for collecting, storing, and retrieving facts in environments with large inventories. Simply put, processing all of these local facts will put a tremendous strain on Tower. Additionally, any CMDB and Source of Truth should be implemented external to Tower.
 
-Because of this, I use an ELK cluster to store Tower logs and Ansible Facts:
+Use something like an ELK cluster to store Tower logs and Ansible Facts:
+
 https://github.com/harrytruman/elk-ansible
 
