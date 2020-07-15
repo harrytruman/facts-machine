@@ -10,7 +10,7 @@
 - name: ios facts
   ios_facts:
     gather_subset: all
-    gather_network_resources: interfaces
+    #gather_network_resources: interfaces
 
 - name: print ansible facts
   debug:
