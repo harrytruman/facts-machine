@@ -5,4 +5,4 @@
   register: backup_location
 
 - debug:
-    msg: {{ backup_location }}
+    msg: "{{ backup_location }}"
