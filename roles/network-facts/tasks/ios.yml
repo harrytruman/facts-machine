@@ -9,8 +9,10 @@
 
 - name: ios facts
   ios_facts:
+    # compatible with old facts modules (<= 2.8)
     gather_subset: all
-    #gather_network_resources: interfaces
+    # facts from network resource modules (2.9+)
+    gather_network_resources: interfaces
 
 - name: print ansible facts
   debug:
