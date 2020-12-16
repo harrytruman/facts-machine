@@ -1,8 +1,7 @@
 ---
-- name: backup device config
-  nxos_config:
+- name: backup device configs
+  cisco.nxos.nxos_config:
     backup: yes
-  register: backup_location
-
-- debug:
-    msg: {{ backup_location }}
+    backup_options:
+      filename: "{{ ansible_hostname }}.backup"
+      dir_path: /var/tmp/backups/{{ ansible_network_os }}/

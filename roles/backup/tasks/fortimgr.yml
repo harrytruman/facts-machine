@@ -1,9 +1,13 @@
 ---
 - name: Gather Fortinet facts
-  fortimgr_facts:
-    provider: "{{ fmgr_connection }}"
-    config_filter:
-      - address
-      - address_group
-    adoms: "all"
-    #fortigates: "all"
+  fortinet.fortios.fortios_system_config_backup_restore:
+    config: "system config backup"
+    host:  "{{ ansible_hostname }}"
+    username: "{{ forti_username }}"
+    password: "{{ forti_password }}"
+    vdom: "{{ forti_vdom }}"
+    backup: "yes"
+    https: True
+    ssl_verify: False
+    scope: "global" or "vdom"
+    filename: "/var/tmp/backups/{{ ansible_network_os }}"
