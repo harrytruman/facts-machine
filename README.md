@@ -63,7 +63,7 @@ Here's an example of gathering facts on a Cisco IOS device. This will create a b
       gather_subset: all
 ```
 
-## Setting Custom Ansible Facts
+### Setting Custom Ansible Facts
 
 You can also run custom commands, save the output, and parse the configuration later. Any command output can be parsed and set as a fact!
 
@@ -147,14 +147,14 @@ Ansible can collect device facts -- useful variables about remote hosts that can
 
 ### Network Facts: Speed and Performance
 
-Get into a habit of routinely checking your playbook runtime. Basline peformance testing is your friend.
+Get into a habit of routinely checking your playbook runtime. Basline peformance testing is your friend:
 
 ```
 #ansible.cfg
 callback_whitelist = profile_tasks, timer
 ```
 
-That said, there are some general principles and guidelines. To start, IOS and EOS are the fastest, XR and NXOS are the slowest. For a better example, here are some base numbers from my individual peformance testing results. I captured simple job run times from an array of fact collection and device configuration roles:
+Beyond that, here are some general principles and guidelines. To start, IOS and EOS are the fastest, XR and NXOS are the slowest. For a better example, here are some base numbers from my individual peformance testing results. I captured simple job run times from an array of fact collection and device configuration roles:
 
 ##### Facts - Single Host
 
