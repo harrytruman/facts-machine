@@ -1,9 +1,9 @@
-# Facts Machine: Network Fact Collection for Ansible/Tower
+# Facts Machine: Network Facts, Configs, and Backups for Ansible/Tower
 -------------
 
 The Facts Machine is a role gathers Ansible Facts, sets custom facts, and parses command output to turn device configurations into code. Once gathered, facts can be used as backups/restores, or called later as variables in other roles or playbooks. And most importantly, they can be used to build the framework of a network CMDB.
 
-This role will pass through the `ansible_network_os` inventory variable to a series of playbooks based on that device OS. Currently, this role will gather facts from the following platforms:
+This role will pass through the `ansible_network_os` inventory variable to a series of playbooks based on that device OS. Currently, this role will gather facts and perform backups from the following platforms:
 
 ```
 eos
@@ -19,9 +19,30 @@ paloalto
 vyos
 ```
 
+### Role Variables
+--------------
+
+The `ansible_network_os` variable defines our inventory hosts' OS. We use this to decide which tasks and templates to run, since each OS can have OS specific commands. This should ideally be coming from an inventory or group variable.
+
+At a minimum, Ansible needs these inventory details:
+```
+ansible_hostname     hostname_fqdn
+ansible_network_os   ios/nxos/etc
+ansible_username     username
+ansible_password     password
+```
+
+Your initial inventory file can be setup like this:
+
+```
+[all]
+hostname_fqdn  ansible_network_os=ios  ansible_username=<username>  ansible_password=<password>
+hostname_fqdn  ansible_network_os=nxos  ansible_username=<username>  ansible_password=<password>
+```
+
 ## Ansible Network Fact Collection
 
-Ansible's native fact gathering can be invoked quite simply by setting `gather_facts: true` in your top level playbook. Additionally, you can gather facts through a playbook task. For instance, `ios_facts`, `eos_facts`, `nxos_facts`, `junos_facts`, etc... Every major networking vendor has a fact module.
+Ansible's native fact gathering can be invoked by setting `gather_facts: true` in your top level playbook. And every major networking vendor has fact modules that you can use in a playbook task: `ios_facts`, `eos_facts`, `nxos_facts`, `junos_facts`, etc...
 
 Here's an example of gathering facts on a Cisco IOS device. This will create a backup of the full running config, and parse config subsets into a platform-agnostic data model:
 
@@ -79,12 +100,6 @@ Setting custom facts works particularly well for building out infrastructure che
       - "Licensed On date is {{ licensed_on }}"
       - "Service Check Date is {{ service_date }}"
 ```
-
-
-### Role Variables
---------------
-
-The `ansible_network_os` variable is the type of device OS that the current host is. We use this to decide which tasks and templates to run since each OS can have OS specific commands. This should be coming from an inventory or group variable.
 
 
 ## Ansible at Scale
