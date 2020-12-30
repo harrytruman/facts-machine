@@ -1,7 +1,0 @@
----
-- name: backup device configs
-  community.network.aireos_command:
-    backup: yes
-    backup_options:
-      filename: "{{ ansible_hostname }}.backup"
-      dir_path: /var/tmp/backups/{{ ansible_network_os }}/

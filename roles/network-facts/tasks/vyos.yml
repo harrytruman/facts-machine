@@ -1,3 +1,0 @@
-- name:
-  vyos_facts:
-    gather_subset: all

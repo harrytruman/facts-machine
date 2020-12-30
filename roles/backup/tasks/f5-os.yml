@@ -1,9 +1,0 @@
----
-- name: backup f5 config
-  bigip_config:
-    provider:
-      server: "{{ inventory_hostname }}"
-      password: "{{ ansible_password }}"
-      user: "{{ ansible_username }}"
-    save: true
-  delegate_to: localhost

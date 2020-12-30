@@ -1,7 +1,0 @@
----
-- name: backup device configs
-  community.network.aruba_config:
-    backup: yes
-    backup_options:
-      filename: "{{ ansible_hostname }}.backup"
-      dir_path: /var/tmp/backups/{{ ansible_network_os }}/

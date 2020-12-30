@@ -5,8 +5,18 @@
   connection: network_cli
 
   roles:
-    - role: network-facts
+    - role: network_facts
 
-  tasks:
-    - debug:
-        msg: "Device {{ inventory_hostname }} is type {{ ansible_network_os }} running software version {{ version }}"
+  #tasks:
+  
+  #  - debug:
+  #      msg: "Device {{ inventory_hostname }} is type {{ ansible_network_os }} running software version {{ version }}"
+
+  #- name: print ansible facts
+  #  debug:
+  #    var: ansible_facts
+
+  #- name: print hostvars
+  #  debug:
+  #    var: hostvars
+  
