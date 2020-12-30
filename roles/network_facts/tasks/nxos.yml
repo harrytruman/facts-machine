@@ -1,0 +1,41 @@
+---
+- name:
+  nxos_facts:
+    # compatible with old facts modules (<= 2.8)
+    gather_subset: min
+    # facts from network resource modules (2.9+)
+    gather_network_resources: all
+
+#- name: collect output from nxos device
+#  nxos_command:
+#    commands:
+#      - show running-config all
+#      - show ip interface brief vrf all | include " {{ ansible_host }} "
+#    provider: "{{ cli_nexus_long_timeout }}"
+#  register: output
+#
+#- name: set version fact
+#  set_fact:
+#    version: "{{ output.stdout[0] | regex_findall('version\\s+(\\S+)') | first }}"
+#
+#- name: set config fact
+#  set_fact:
+#    config: "{{ output.stdout[0] }}"
+#
+#- name: set config_lines fact
+#  set_fact:
+#    config_lines: "{{ output.stdout_lines[0] }}"
+#
+#- name: set management interface name fact
+#  set_fact:
+#    mgmt_interface_name: "{{ output.stdout[1].split()[0] }}"
+#
+#- nxos_command:
+#    commands:
+#      - show vrf interface {{ mgmt_interface_name }} | exclude Interface
+#    provider: "{{ cli }}"
+#  register: output
+#
+#- name: set management interface vrf name fact
+#  set_fact:
+#    vrf_name: "{{ output.stdout[0].split()[1] }}"

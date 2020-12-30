@@ -1,0 +1,8 @@
+---
+ansible_network_os: undefined
+#cli_nexus_long_timeout:
+#  host: "{{ inventory_hostname }}"
+#  username: "{{ ansible_username }}"
+#  password: "{{ ansible_password }}"
+#  transport: cli
+#  timeout: 180

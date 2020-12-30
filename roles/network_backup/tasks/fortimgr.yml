@@ -1,0 +1,12 @@
+- name: backup global or a_specific_vdom settings
+  fortios_system_config_backup_restore:
+    config: "system config backup"
+    host:  "{{ inventory_hostname }}"
+    username: "{{ ansible_user }}"
+    password: "{{ ansible_password }}"
+    vdom: "{{ vdom }}"
+    backup: "yes"
+    https: True
+    ssl_verify: False
+    scope: "global" or "vdom"
+    filename: "{{ ansible_network_os }}-{{ inventory_hostname }}.cfg"

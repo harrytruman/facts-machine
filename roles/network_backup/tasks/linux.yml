@@ -1,0 +1,10 @@
+---
+- name: Execute show commands to collect device info
+  setup:
+    filter: ansible_distribution_version
+  register: linux_facts
+
+- name: set version fact
+  set_fact:
+    version: "{{ (linux_facts)['ansible_facts']['ansible_distribution_version'] }}"
+

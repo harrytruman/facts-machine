@@ -1,0 +1,31 @@
+---
+# There is not yet a formal Aruba fact module, so we use command parsing:
+- name: collect output from aruba_mobility_controller device
+  aruba_command:
+    commands:
+      - show version
+      - show running-config
+      - show ip interface brief | include {{ ansible_host }}
+    provider: "{{ cli }}"
+  register: output
+
+- name: set version fact
+  set_fact:
+    version: "{{ output.stdout[0] | regex_search('Version (\\S+)', '\\1') | first }}"
+
+- name: set config fact
+  set_fact:
+    config: "{{ output.stdout[1] }}"
+
+- name: set config_lines fact
+  set_fact:
+    config_lines: "{{ output.stdout_lines[1] }}"
+
+- name: set management interface name fact
+  set_fact:
+    mgmt_interface_name: "{{ output.stdout[2] | regex_search('([\\w\\d]+\\s[\\w\\d]+)', '\\1') | first }}"
+
+- name: set master/local fact for HA settings
+  set_fact:
+    ha_role: "{{ output_wlan.stdout[0] | regex_search('switchrole\\:(\\w+)', '\\1') | first }}"
+  when: output_wlan is defined and output_wlan.stdout is defined

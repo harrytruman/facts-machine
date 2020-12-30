@@ -1,0 +1,22 @@
+---
+- name: collect device facts and running configs
+  hosts: all
+  gather_facts: no
+  connection: network_cli
+
+  roles:
+    - role: network_backup
+
+  #tasks:
+  
+  #  - debug:
+  #      msg: "Device {{ inventory_hostname }} is type {{ ansible_network_os }} running software version {{ version }}"
+
+  #- name: print ansible facts
+  #  debug:
+  #    var: ansible_facts
+
+  #- name: print hostvars
+  #  debug:
+  #    var: hostvars
+  

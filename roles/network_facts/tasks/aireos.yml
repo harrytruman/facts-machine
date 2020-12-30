@@ -1,0 +1,21 @@
+---
+# There is not yet a formal AireOS fact module, so we use command parsing:
+- name: collect output from aireos device
+  aireos_command:
+    commands:
+      - show sysinfo
+      - show run-config commands
+    provider: "{{ cli }}"
+  register: output
+
+- name: set version fact
+  set_fact:
+    version: "{{ output.stdout[0] | regex_search('Product Version\\.* (.*)', '\\1') | first }}"
+
+- name: set config fact
+  set_fact:
+    config: "{{ output.stdout[1] }}"
+
+- name: set config_lines fact
+  set_fact:
+    config_lines: "{{ output.stdout_lines[1] }}"

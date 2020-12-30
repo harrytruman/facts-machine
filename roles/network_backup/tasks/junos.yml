@@ -1,0 +1,6 @@
+- name: backup current device config
+  junos_config:
+    backup: yes
+    backup_options:
+      filename: "{{ ansible_network_os }}-{{ inventory_hostname }}.cfg"
+      dir_path: /var/tmp/backup/

@@ -1,0 +1,27 @@
+---
+- name:
+  eos_facts:
+    # compatible with old facts modules (<= 2.8)
+    gather_subset: min
+    # facts from network resource modules (2.9+)
+    gather_network_resources: all
+
+#- name: collect output from eos device
+#  eos_command:
+#    commands:
+#      - show version | json
+#      - show running-config all | json
+#      - show ip interface brief | include {{ ansible_host }}
+#  register: output
+
+#- name: set version fact
+#  set_fact:
+#    version: "{{ output.stdout[0].version }}"
+
+#- name: set config fact
+#  set_fact:
+#    config: "{{ output.stdout[1] }}"
+
+#- name: set management interface name fact
+#  set_fact:
+#    mgmt_interface_name: "{{ output.stdout[2].split()[0] }}"

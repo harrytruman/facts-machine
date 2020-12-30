@@ -1,0 +1,43 @@
+---
+- name: ios facts
+  ios_facts:
+    # compatible with old facts modules (<= 2.8)
+    gather_subset: min
+    # facts from network resource modules (2.9+)
+    gather_network_resources: all
+
+- name: print ansible facts
+  debug:
+    var: ansible_facts
+
+- name: print hostvars
+  debug:
+    var: hostvars
+
+#- name: collect output from ios device
+#  ios_command:
+#    commands:
+#      - show version
+#      - show running-config
+#      - show ip interface brief | include {{ ansible_host }}
+#  register: output
+#
+#- name: set version fact
+#  set_fact:
+#    version: "{{ output.stdout[0] | regex_search('Version (\\S+)', '\\1') | first }}"
+#
+#- name: set model number
+#  set_fact:
+#    model_number: "{{ output.stdout[0] | regex_search('[cC]isco\\s+(\\S+).+?with .+? bytes of.+?memory', '\\1') | first | regex_search('(\\d+)') }}"
+#
+#- name: set config fact
+#  set_fact:
+#    config: "{{ output.stdout[1] }}"
+#
+#- name: set config_lines fact
+#  set_fact:
+#    config_lines: "{{ output.stdout_lines[1] }}"
+#
+#- name: set management interface name fact
+#  set_fact:
+#    mgmt_interface_name: "{{ output.stdout[2].split()[0] }}"

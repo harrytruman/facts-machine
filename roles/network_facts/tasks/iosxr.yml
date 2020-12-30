@@ -1,0 +1,36 @@
+---
+- name:
+  iosxr_facts:
+    # compatible with old facts modules (<= 2.8)
+    gather_subset: min
+    # facts from network resource modules (2.9+)
+    gather_network_resources: all
+
+#- name: collect output from iosxr device
+#  iosxr_command:
+#    commands:
+#      - show version
+#      - show running-config
+#      - show ipv4 vrf all interface brief | include {{ ansible_host }}
+#    provider: "{{ cli }}"
+#  register: output
+#
+#- name: set version fact
+#  set_fact:
+#    version: "{{ output.stdout[0] | regex_search('Version (\\S+)\\[', '\\1') | first }}"
+#
+#- name: set config fact
+#  set_fact:
+#    config: "{{ output.stdout[1] }}"
+#
+#- name: set config_lines fact
+#  set_fact:
+#    config_lines: "{{ output.stdout_lines[1] }}"
+#
+#- name: set management interface name fact
+#  set_fact:
+#    mgmt_interface_name: "{{ output.stdout[2].split()[0] }}"
+#
+#- name: set vrf interface name fact
+#  set_fact:
+#    vrf_name: "{{ output.stdout[2].split()[-1] }}"

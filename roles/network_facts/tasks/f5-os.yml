@@ -1,0 +1,34 @@
+---
+- name: f5 facts
+  bigip_facts:
+    server: "{{ inventory_hostname }}"
+    user: "{{ ansible_username }}"
+    password: "{{ ansible_password }}"
+    include:
+      - interface
+      - vlan
+      - certificate
+      - client_ssl_profile
+      - device
+      - pool
+      - rule
+      - self_ip
+  delegate_to: localhost
+
+- name: collect output from f5 device
+  bigip_command:
+    commands:
+      - show running-config one-line
+    server: "{{ inventory_hostname }}"
+    password: "{{ ansible_password }}"
+    user: "{{ ansible_username }}"
+  changed_when: false
+  register: output
+
+- name: set config fact
+  set_fact:
+    config: "{{ output.stdout[0] }}"
+
+- name: set config_lines fact
+  set_fact:
+    config_lines: "{{ output.stdout_lines[0] }}"
