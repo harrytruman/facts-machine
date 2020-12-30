@@ -1,9 +1,12 @@
-# Facts Machine: Network Facts, Configs, and Backups for Ansible/Tower
+# Facts Machine
+## Network Facts, Configs, and Backups for Ansible
 -------------
 
-The Facts Machine is a role gathers Ansible Facts, sets custom facts, and parses command output to turn device configurations into code. Once gathered, facts can be used as backups/restores, or called later as variables in other roles or playbooks. And most importantly, they can be used to build the framework of a network CMDB.
+The Facts Machine parses network configs into a data model. This role gathers native Ansible Facts or sets custom facts to parse command output and convert device configurations into code. Once gathered, facts can be used as backups/restores, called later as variables in other roles or playbooks, and used to define the state of a device.
 
-This role will pass through the `ansible_network_os` inventory variable to a series of playbooks based on that device OS. Currently, this role will gather facts and perform backups from the following platforms:
+And most importantly, facts are used to build the framework of a network CMDB!
+
+This role will gather facts and perform backups from the following platforms:
 
 ```
 eos
@@ -22,7 +25,7 @@ vyos
 ### Role Variables
 --------------
 
-The `ansible_network_os` variable defines our inventory hosts' OS. We use this to decide which tasks and templates to run, since each OS can have OS specific commands. This should ideally be coming from an inventory or group variable.
+This role will pass through the `ansible_network_os` inventory variable to a series of playbooks based on that device OS. This should ideally be coming from an inventory or group variable.
 
 At a minimum, Ansible needs these inventory details:
 ```
