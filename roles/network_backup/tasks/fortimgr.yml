@@ -9,4 +9,4 @@
     https: True
     ssl_verify: False
     scope: "global" or "vdom"
-    filename: "{{ ansible_network_os }}-{{ inventory_hostname }}.cfg"
+    filename: "{{ network_backup_path }}/{{ ansible_network_os }}-{{ inventory_hostname }}.cfg"

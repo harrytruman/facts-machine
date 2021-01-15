@@ -1,8 +1,8 @@
 ---
 - name: collect device facts and running configs
-  hosts: all
+  hosts: "{{ hosts | default('all') | lower }}"
   gather_facts: no
-  connection: network_cli
+  connection: "{{ ansible_connection | default(network_cli) }}"
 
   roles:
     - role: network_backup

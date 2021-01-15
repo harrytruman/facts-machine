@@ -4,7 +4,7 @@
     # compatible with old facts modules (<= 2.8)
     gather_subset: min
     # facts from network resource modules (2.9+)
-    gather_network_resources: all
+    #gather_network_resources: all
 
 #- name: collect output from eos device
 #  eos_command:
