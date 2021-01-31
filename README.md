@@ -135,6 +135,25 @@ Ansible Facts can be cached too! Options include local file, memcached, Redis, a
 
 The combination of using network facts and fact caching can allow you to poll existing, in-memory data rather than parsing numerous additional commands to constantly check/refresh the device's running config.
 
+
+### Backups and Restores
+
+I consider device backups part of the fact collection process. If you're already connecting to a device and parsing its config, you might as well make a backup too. In the same time that Ansible is parsing config lines, you can easily have it dump the full running-config to a backup location of any kind -- local file, external share, git repo, etc...
+```
+- ios_config:
+  backup: yes
+  backup_options:
+    filename: "{{ ansible_network_os }}-{{ inventory_hostname }}.cfg"
+    dir_path: /var/tmp/backup/
+```
+
+And if you want to restore these configs, just grab the most recent backup file:
+```
+- name: restore config
+   ios_config:
+    src: /var/tmp/backup/{{ ansible_network_os }}-{{inventory_hostname}}.cfg
+```
+
 ### Making Custom Ansible Facts
 
 You can also run custom commands, save the output, and parse the configuration later. Any command output can be parsed and set as a fact!
