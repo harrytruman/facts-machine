@@ -84,21 +84,55 @@ ansible_network_os=nxos
 
 Ansible's native fact gathering can be invoked by setting `gather_facts: true` in your top level playbook. And every major networking vendor has fact modules that you can use in a playbook task: `ios_facts`, `eos_facts`, `nxos_facts`, `junos_facts`, etc...
 
-Here's an example of gathering facts on a Cisco IOS device. This will create a backup of the full running config, and parse config subsets into a platform-agnostic data model:
+Just enable `gather_facts`, and you're on your way! Here's an example of gathering facts on a Cisco IOS device to create a backup of the full running config, and parse config subsets into a platform-agnostic data model:
 
 ```
 - name: collect device facts and running configs
   hosts: all
   gather_facts: yes
   connection: network_cli
+```
 
+Or at the task level:
+
+```
   tasks:
   - name: gather ios facts
     ios_facts:
       gather_subset: all
 ```
 
-### Setting Custom Ansible Facts
+Either way, this is how you start down the path to true Config-to-Code!
+
+```
+ansible_facts:
+  ansible_net_fqdn: ios-dc2-rtr.lab.vault112
+  ansible_net_gather_subset:
+  - interfaces
+  ansible_net_hostname: ios-dc2-rtr
+  ansible_net_serialnum: X11G14CLASSIFIED...
+  ansible_net_system: nxos
+  ansible_net_model: 93180yc-ex
+  ansible_net_version: 14.22.0F
+  ansible_network_resources:
+    interfaces:
+    - name: Ethernet1/1
+      enabled: true
+      mode: trunk
+    - name: Ethernet1/2
+      enabled: false
+    ...
+ ```
+
+#### Fact Caching
+
+Ansible Facts can be cached too! Options include local file, memcached, Redis, and a plethora of others, via Ansible's [Cache Plugins](https://docs.ansible.com/ansible/latest/plugins/cache.html). And caching can be enabled with just the click button [in AWX and Tower](https://docs.ansible.com/ansible-tower/latest/html/userguide/job_templates.html#benefits-of-fact-caching), where you can then view facts via UI and API both.
+
+![fact cache](https://docs.ansible.com/ansible-tower/latest/html/userguide/_images/job-templates-options-use-factcache.png)
+
+The combination of using network facts and fact caching can allow you to poll existing, in-memory data rather than parsing numerous additional commands to constantly check/refresh the device's running config.
+
+### Making Custom Ansible Facts
 
 You can also run custom commands, save the output, and parse the configuration later. Any command output can be parsed and set as a fact!
 
@@ -204,9 +238,9 @@ XR:         9
 NXOS:       10
 ```
 
-From the results at the time of testing, fact collection takes 2-3 seconds for a single, modern IOS/XE device. That will vary, however, depending on the complexity of the config and the firmware versions. Older firmware versions perform far slower (5-10 seconds).
+Fact collection takes 2-3 seconds for a single, modern IOS/XE device. That will vary, however, depending on the complexity of the config and the firmware versions. Older firmware versions perform far slower (5-10 seconds).
 
-And other network families differ entirely. Compared to IOS completing a simple config backup in 2-3 seconds, NXOS takes 10-15 seconds, IOS-XR takes 8-12 seconds, EOS takes 6-10 seconds, etc…
+And other network families differ entirely. Compared to IOS completing a simple `show run all` in 2-3 seconds, NXOS can 10-15 seconds, IOS-XR often 8-12 seconds, EOS around 6-10 seconds, etc…
 
 --------------
 
