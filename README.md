@@ -1,4 +1,5 @@
 # Facts Machine
+
 ## Network Facts, Configs, and Backups for Ansible
 
 The Facts Machine parses network configs into a data model. This role gathers native Ansible Facts or sets custom facts to parse command output and convert device configurations into code.
@@ -34,6 +35,8 @@ ansible_network_os   ios/nxos/etc
 ansible_username     username
 ansible_password     password
 ```
+
+### Inventory
 
 I *highly* recommend [vaulting your passwords/keys/creds](https://docs.ansible.com/ansible/latest/user_guide/vault.html#creating-encrypted-variables) instead of storing them plaintext! My inventories usually start like this:
 
@@ -187,31 +190,6 @@ Network devices, on the other hand, rarely perform their own data processing. Un
 
 --------------
 
-### Fact Collection at Scale
-
-Ansible helps solve the problem of communicating with every device on your network. But even though this is the 21st century, network command orchestration is still accomplished primarily by sending commands to devices and having those devices return output back to Ansible. Over and over. Rather than being able to rely on remote devices to do their own work, Ansible handles all network data processing as it’s received from remote devices. For most network environments, all data processing will to be performed locally on Ansible/Tower. 
-
-In the pursuit of scaling Ansible/Tower to manage large network device inventories, we must consider a number of factors that will directly impact job performance:
-
-  1. Frequency and extent of orchestrating/scheduling device changes
-  2. Device configuration size (raw text output from `show run`, etc..)
-  3. Inventory sizes and devices families, e.g. IOS, NXOS, XR
-  4. Ansible network facts modules, parsers, and fact caching
-
-##### Frequency and extent of orchestrating/scheduling device changes
-With any large inventory, there comes a balancing act between scheduling configuration changes and avoiding resource contention. At a high level, this can be as simple as benchmarking job run times with Tower resource loads, and setting job template forks accordingly. When creating new network automation roles, it’s important to establish solid development practices to avoid potentially significant processing times.
-
-##### Device configuration size
-Most network automation roles will be utilizing Ansible facts derived from device configs. By looking at the raw device config sizes, such as the text output from `show run`, we can establish a rough estimate of memory usage per-host during large jobs.
-
-##### Inventory sizes and devices families, e.g. IOS, NXOS, XR
-Due to the large inventory size and the likelihood of significant inventory metadata, it’s critical to ensure that inventories are broken into smaller groups -- group sizes of 5,000 or less are highly recommended. Additionally, it’s important to note that device types/families perform noticeably faster/slower than others. IOS, for instance, is often 3-4 faster than NXOS.
-
-##### Implementation and availability of Ansible network facts
-Ansible can collect device facts -- useful variables about remote hosts that can be used in playbooks. Additionally, these facts can be cached in Tower. The combination of using network facts with the fact cache can significantly increase Tower job speed and reduce processing loads.
-
---------------
-
 ### Network Facts: Speed and Performance
 
 Get into a habit of routinely checking your playbook runtime. Basline peformance testing is your friend:
@@ -244,11 +222,35 @@ And other network families differ entirely. Compared to IOS completing a simple 
 
 --------------
 
+### Fact Collection at Scale
+
+Ansible helps solve the problem of communicating with every device on your network. But even though this is the 21st century, network command orchestration is still accomplished primarily by sending commands to devices and having those devices return output back to Ansible. Over and over. Rather than being able to rely on remote devices to do their own work, Ansible handles all network data processing as it’s received from remote devices. For most network environments, all data processing will to be performed locally on Ansible/Tower. 
+
+In the pursuit of scaling Ansible/Tower to manage large network device inventories, we must consider a number of factors that will directly impact job performance:
+
+  1. Frequency and extent of orchestrating/scheduling device changes
+  2. Device configuration size (raw text output from `show run`, etc..)
+  3. Inventory sizes and devices families, e.g. IOS, NXOS, XR
+  4. Ansible network facts modules, parsers, and fact caching
+
+##### Frequency and extent of orchestrating/scheduling device changes
+With any large inventory, there comes a balancing act between scheduling configuration changes and avoiding resource contention. At a high level, this can be as simple as benchmarking job run times with Tower resource loads, and setting job template forks accordingly. When creating new network automation roles, it’s important to establish solid development practices to avoid potentially significant processing times.
+
+##### Device configuration size
+Most network automation roles will be utilizing Ansible facts derived from device configs. By looking at the raw device config sizes, such as the text output from `show run`, we can establish a rough estimate of memory usage per-host during large jobs.
+
+##### Inventory sizes and devices families, e.g. IOS, NXOS, XR
+Due to the large inventory size and the likelihood of significant inventory metadata, it’s critical to ensure that inventories are broken into smaller groups -- group sizes of 5,000 or less are highly recommended. Additionally, it’s important to note that device types/families perform noticeably faster/slower than others. IOS, for instance, is often 3-4 faster than NXOS.
+
+##### Implementation and availability of Ansible network facts
+Ansible can collect device facts -- useful variables about remote hosts that can be used in playbooks. Additionally, these facts can be cached in Tower. The combination of using network facts with the fact cache can significantly increase Tower job speed and reduce processing loads.
+
+--------------
+
 ## Storing and Using Facts
 
-Tower is not ideal for collecting, storing, and retrieving facts in environments with large inventories. Simply put, processing all of these local facts WHILE running a full cluster will put a tremendous strain on Tower.
+Unless your clusters have significant free resources to spare, Tower is not ideal for collecting, storing, *and* retrieving facts in environments with constant jobs running against large inventories. Simply put, processing all of these local facts **while** running a full cluster will put a tremendous strain on Tower.
 
 Any CMDB and Source of Truth should be implemented external to Tower. I use something like an ELK cluster to store Tower logs and Ansible Facts:
 
 https://github.com/harrytruman/elk-ansible
-
