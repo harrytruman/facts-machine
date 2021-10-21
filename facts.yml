@@ -1,7 +1,7 @@
 ---
 - name: collect device facts and running configs
   hosts: "{{ hosts | default('all') | lower }}"
-  gather_facts: no
+  gather_facts: yes
   connection: "{{ ansible_connection | default(network_cli) }}"
 
   roles:
