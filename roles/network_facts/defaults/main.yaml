@@ -1,5 +1,5 @@
 ---
-ansible_network_os: undefined
+ansible_network_os: linux
 #cli_nexus_long_timeout:
 #  host: "{{ inventory_hostname }}"
 #  username: "{{ ansible_username }}"
