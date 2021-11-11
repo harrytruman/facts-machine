@@ -2,7 +2,7 @@
 - name: collect linux facts
   hosts: "{{ hosts | default('all') | lower }}"
   gather_facts: yes
-  connection: "{{ ansible_connection | default(ssh) }}"
+  #connection: "{{ ansible_connection | default() }}"
 
   roles:
     - role: network_facts
