@@ -29,7 +29,7 @@ VYOS
 
 ### Role Variables
 
-Ansible uses the `ansible_network_os` inventory variable to define the device OS. This should ideally be coming from an inventory or group variable.
+Ansible needs a few minimum details to get started. In particular, the `ansible_os` and `ansible_network_os` inventory variables to define the respective server or device OS (which should ideally be coming from a proper CMDB).
 
 At a minimum, Ansible needs these details to run against hosts:
 ```
@@ -138,7 +138,8 @@ Ansible Facts can be cached too! Options include local file, memcached, Redis, a
 
 The combination of using network facts and fact caching can allow you to poll existing, in-memory data rather than parsing numerous additional commands to constantly check/refresh the device's running config.
 
-When using AAP/Tower, you can access cached facts for an individual host via: `https://{{ aap_fqdn }}/api/v2/hosts/{{ inventory_host }}/ansible_facts`
+When using AAP/Tower, you can access cached facts for an individual host via:
+```https://{{ aap_fqdn }}/api/v2/hosts/{{ inventory_host }}/ansible_facts```
 
 
 ### Backups and Restores
