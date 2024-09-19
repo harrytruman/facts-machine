@@ -9,17 +9,19 @@ Once gathered, facts can be used as backups/restores, called later as variables 
 This role will is compatible with the following platforms:
 
 ```
-eos
-ios
-iosxr
-nxos
-aruba
-aireos
-f5-os
-fortimgr
-junos
-paloalto
-vyos
+Linux, Windows
+
+IOS
+IOS-XR
+NX-OS
+AireOS
+EOS
+JunOS
+Aruba
+F5
+Palo Alto
+Fortigate
+VYOS
 ```
 
 --------------
