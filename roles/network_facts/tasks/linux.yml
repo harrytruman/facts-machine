@@ -1,10 +1,11 @@
 ---
-- name: Execute show commands to collect device info
-  setup:
+- name: gather os facts
+  ansible.builtin.setup:
 #    filter: ansible_distribution_version
-  register: linux_facts
+#  register: os_facts
 
-#- name: set version fact
-#  set_fact:
-#    version: "{{ (linux_facts)['ansible_facts']['ansible_distribution_version'] }}"
-
+#- name: example setting custom rhel version fact
+#  ansible.builtin.set_fact:
+#    ipu_rhel_version: "{{ (os_facts)['ansible_facts']['ansible_distribution_version'] }}"
+#    ipu_tla_name: "{{ sot_tla }}"
+#    ipu_chg_req: "{{ snow_record_number }}"
