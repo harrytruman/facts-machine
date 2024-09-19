@@ -1,5 +1,5 @@
 ---
-- name: collect device facts and running configs
+- name: collect network device facts and running configs
   hosts: "{{ hosts | default('all') | lower }}"
   gather_facts: yes
   connection: "{{ ansible_connection | default(network_cli) }}"
@@ -8,9 +8,8 @@
     - role: network_facts
 
   tasks:
-  
-    - debug:
-        msg: "Device {{ inventory_hostname }} is type {{ ansible_network_os }}"
+    - ansible.builtin.debug:
+        msg: "{{ inventory_hostname }} is running {{ ansible_network_os }} verion {{ ansible_net_version }}"
 
   #- name: print ansible facts
   #  debug:
