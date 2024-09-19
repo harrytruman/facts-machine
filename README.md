@@ -103,7 +103,7 @@ Or at the task level:
 ```
   tasks:
   - name: gather ios facts
-    ios_facts:
+    cisco.ios.ios_facts:
       gather_subset: all
 ```
 
@@ -137,12 +137,14 @@ Ansible Facts can be cached too! Options include local file, memcached, Redis, a
 
 The combination of using network facts and fact caching can allow you to poll existing, in-memory data rather than parsing numerous additional commands to constantly check/refresh the device's running config.
 
+When using AAP/Tower, you can access cached facts for an individual host via: `https://{{ aap_fqdn }}/api/v2/hosts/{{ inventory_host }}/ansible_facts`
+
 
 ### Backups and Restores
 
 I consider device backups part of the fact collection process. If you're already connecting to a device and parsing its config, you might as well make a backup too. In the same time that Ansible is parsing config lines, you can easily have it dump the full running-config to a backup location of any kind -- local file, external share, git repo, etc...
 ```
-- ios_config:
+- cisco.ios.ios_config:
   backup: yes
   backup_options:
     filename: "{{ ansible_network_os }}-{{ inventory_hostname }}.cfg"
@@ -152,7 +154,7 @@ I consider device backups part of the fact collection process. If you're already
 And if you want to restore these configs, just grab the most recent backup file:
 ```
 - name: restore config
-   ios_config:
+   cisco.ios.ios_config:
     src: /var/tmp/backup/{{ ansible_network_os }}-{{inventory_hostname}}.cfg
 ```
 
@@ -164,13 +166,13 @@ Here's an example of how to set a custom fact for Cisco IOS versions. This will 
 
 ```
 - name: run `show version` command
-  ios_command:
+  cisco.ios.ios_command:
     commands:
       - show version
   register: output
 
 - name: set version fact
-  set_fact:
+  ansible.builtin.set_fact:
     cisco-ios-version: "{{ output.stdout[0] | regex_search('Version (\\S+)', '\\1') | first }}"
 ```
 
@@ -178,22 +180,22 @@ Setting custom facts works particularly well for building out infrastructure che
 
 ```
 - name: get license information - {{ inventory_hostname }}
-  bigip_command:
+  f5.bigip_command:
     commands:
       - show sys license
   register: license_output
 
 - name: search for `licensed on` and `service check date`
-  set_fact:
+  ansible.builtin.set_fact:
     licensed_on: "{{ license_output.stdout[0] | regex_search('Licensed On (.*)') }}"
     service_date: "{{ license_output.stdout[0] | regex_search('Service Check Date (.*)') }}"
 
 - name: Get Licensed On and Service Check Date
-  set_fact:
+  ansible.builtin.set_fact:
     licensed_on: "{{ licensed_on.split(' ') | last }}"
     service_date: "{{ service_date.split(' ') | last }}"
 
-- debug:
+- ansible.builtin.debug:
     msg:
       - "Licensed On date is {{ licensed_on }}"
       - "Service Check Date is {{ service_date }}"
