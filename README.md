@@ -9,8 +9,9 @@ Once gathered, facts can be used as backups/restores, called later as variables 
 This role will is compatible with the following platforms:
 
 ```
-Linux, Windows
-
+Linux
+Windows
+--
 IOS
 IOS-XR
 NX-OS
