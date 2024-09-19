@@ -1,5 +1,5 @@
 ---
-- name: collect device facts and running configs
+- name: backup configs to external files
   hosts: "{{ hosts | default('all') | lower }}"
   gather_facts: no
   connection: "{{ ansible_connection | default(network_cli) }}"
