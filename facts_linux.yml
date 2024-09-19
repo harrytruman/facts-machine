@@ -8,14 +8,14 @@
     - role: network_facts
 
   tasks:
-    - debug:
-        msg: "Host {{ inventory_hostname }} is running {{ ansible_distribution_major_version }} {{ ansible_distribution_major_version }}"
+    - ansible.builtin.debug:
+        msg: "{{ inventory_hostname }}_{{ ansible_distribution }}.{{ ansible_distribution_major_version }}"
 
   #- name: print ansible facts
-  #  debug:
+  #  ansible.builtin.debug:
   #    var: ansible_facts
 
   #- name: print hostvars
-  #  debug:
+  #  ansible.builtin.debug:
   #    var: hostvars
   
