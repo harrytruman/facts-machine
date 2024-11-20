@@ -1,11 +1,11 @@
 ---
-- name: collect linux facts
+- name: collect os facts
   hosts: "{{ hosts | default('all') | lower }}"
   gather_facts: yes
   #connection: "{{ ansible_connection | default() }}"
 
-  roles:
-    - role: network_facts
+#  roles:
+#    - role: network_facts
 
   tasks:
     - ansible.builtin.debug:
