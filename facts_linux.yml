@@ -4,18 +4,15 @@
   gather_facts: yes
   #connection: "{{ ansible_connection | default() }}"
 
-#  roles:
-#    - role: network_facts
-
   tasks:
     - ansible.builtin.debug:
         msg: "{{ inventory_hostname }}_{{ ansible_distribution }}.{{ ansible_distribution_major_version }}"
 
-  #- name: print ansible facts
-  #  ansible.builtin.debug:
-  #    var: ansible_facts
+    #- name: print ansible facts
+    #  ansible.builtin.debug:
+    #    var: ansible_facts
 
-  #- name: print hostvars
-  #  ansible.builtin.debug:
-  #    var: hostvars
+    #- name: print hostvars
+    #  ansible.builtin.debug:
+    #    var: hostvars
   
