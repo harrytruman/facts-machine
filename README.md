@@ -27,21 +27,26 @@ VYOS
 
 --------------
 
-### Role Variables
+### Find Host Login Details
 
 Ansible needs a few minimum details to get started. In particular, the `ansible_os` and `ansible_network_os` inventory variables to define the respective server or device OS (which should ideally be coming from a proper CMDB).
 
-At a minimum, Ansible needs these details to run against hosts:
+At a minimum, you need to define these for each of your inventory hosts:
 ```
 ansible_hostname     hostname_fqdn
-ansible_network_os   ios/nxos/etc
 ansible_username     username
 ansible_password     password
+and...
+ansible_os           redhat/ubuntu/windows/etc...
+or...
+ansible_network_os   ios/nxos/eos/etc
 ```
 
-### Inventory
+### Buid an Inventory File
 
-I *highly* recommend [vaulting your passwords/keys/creds](https://docs.ansible.com/ansible/latest/user_guide/vault.html#creating-encrypted-variables) instead of storing them plaintext! My inventories usually start like this:
+And then you need an inventory file that lists the hosts you're connecting to:
+
+P.S. I *highly* recommend [vaulting your passwords/keys/creds](https://docs.ansible.com/ansible/latest/user_guide/vault.html#creating-encrypted-variables) instead of storing them plaintext! My inventories usually start like this:
 
 ```
 [all]
@@ -86,11 +91,11 @@ ansible_network_os=nxos
 
 --------------
 
-## Ansible Network Fact Collection
+## Ansible Fact Collection
 
-Ansible's native fact gathering can be invoked by setting `gather_facts: true` in your top level playbook. And every major networking vendor has fact modules that you can use in a playbook task: `ios_facts`, `eos_facts`, `nxos_facts`, `junos_facts`, etc...
+Ansible's native fact gathering can be invoked by setting `gather_facts: true` in your top level playbook. And every major networking vendor has fact modules that you can use in a playbook task: `ios_facts`, `eos_facts`, `nxos_facts`, `junos_facts`, etc... Just enable `gather_facts`, and you're on your way!
 
-Just enable `gather_facts`, and you're on your way! Here's an example of gathering facts on a Cisco IOS device to create a backup of the full running config, and parse config subsets into a platform-agnostic data model:
+Here's an example of gathering facts from a Cisco IOS device to create a backup of the full running config, and parse config subsets into a platform-agnostic data model:
 
 ```
 - name: collect device facts and running configs
@@ -160,11 +165,11 @@ And if you want to restore these configs, just grab the most recent backup file:
     src: /var/tmp/backup/{{ ansible_network_os }}-{{inventory_hostname}}.cfg
 ```
 
-### Making Custom Ansible Facts
+### Create Your Own Custom Ansible Facts
 
-You can also run custom commands, save the output, and parse the configuration later. Any command output can be parsed and set as a fact!
+You can also run custom commands, save the output, and parse the configuration later. Any output can be parsed and saved as a fact!
 
-Here's an example of how to set a custom fact for Cisco IOS versions. This will run `show version`, find the version information, and save it as the variable `cisco-ios-version`.
+Here's an example of how to set a custom fact for Cisco IOS versions. This will run `show version`, find the version details, and save it as the variable `cisco-ios-version`.
 
 ```
 - name: run `show version` command
@@ -178,7 +183,7 @@ Here's an example of how to set a custom fact for Cisco IOS versions. This will 
     cisco-ios-version: "{{ output.stdout[0] | regex_search('Version (\\S+)', '\\1') | first }}"
 ```
 
-Setting custom facts works particularly well for building out infrastructure checks/verifications. For instance, F5 natively gathers the attached license, but you can identify additional content that will help you automate expiration/renewal processes. As an example, this will run one command (`show sys license`) and set two facts: one for when the device was licensed, and another for the service check date:
+Setting custom facts works particularly well for building out infrastructure checks/verifications. A good example of this is how F5 natively gathers the attached license. But you also can identify additional content that will help you automate expiration/renewal processes. For instance, this will run one command (`show sys license`) and set two facts: one for when the device was licensed, and another for the service check date:
 
 ```
 - name: get license information - {{ inventory_hostname }}
@@ -209,41 +214,20 @@ Setting custom facts works particularly well for building out infrastructure che
 
 ### How Ansible Works: Network vs OS
 
-It’s important to differentiate that Ansible/Tower operates somewhat differently when configuring network and devices, compared to when performing traditional OS management. When Ansible runs against a proper OS like Linux/Windows, the remote hosts have Python/Bash, and they both receive commands and process their own data and state changes. As an example with a Linux host, a standard logging service configuration playbook would be fully executed on the remote host; upon completion, only task results are sent back to Ansible.
+It’s important to differentiate that Ansible operates somewhat differently when running against network devices and cloud/API endpoints. When Ansible runs against a full OS like Linux, the remote hosts have Python/Bash, and they both receive commands and process their own data and state changes. As an example with a Linux host, a standard logging service configuration playbook would be fully executed on the remote host; upon completion, only task results are sent back to Ansible.
 
-Network devices, on the other hand, rarely perform their own data processing. Until quite recently, very few network devices were built to have APIs -- much less Python. This presents a problem for any external configuration or management system. Things like SNMP address some parts of this problem by allowing some aspects of configuration and device state to be set or polled, but the vast majority of networks are managed via good ol' fashioned screen scrapes and command orchestration scripts.
+Network devices, on the other hand, rarely perform their own data processing. Until quite recently, very few network devices were built to have software APIs -- much less run Python. This presents a problem for any external configuration or management system. Things like SNMP may address some parts of this problem, by allowing some aspects of configuration and device state to be set or polled, but the reality is that a vast majority of networks are still managed via good ol' fashioned screen scrapes and command orchestration scripts...and that doesn't have to be the only option!
 
 --------------
 
 ### Network Facts: Speed and Performance
 
-Get into a habit of routinely checking your playbook runtime. Basline peformance testing is your friend:
+Get into a habit of routinely checking your playbook runtimes. Basline peformance testing is your friend! This will display run times for individual tasks and the whole playbook run:
 
 ```
 #ansible.cfg
 callback_whitelist = profile_tasks, timer
 ```
-
-Beyond that, here are some general principles and guidelines. To start, IOS and EOS are the fastest, XR and NXOS are the slowest. For a better example, here are some base numbers from my individual peformance testing results. I captured simple job run times from an array of fact collection and device configuration roles:
-
-##### Facts - Single Host
-
-Running fact collection against a single host - time in seconds:
-```
-IOS:        2
-XE:         2
-AireOS:     4
-F5:         4
-CiscoWLAN:  5
-Fortinet:   5
-EOS:        7
-XR:         9
-NXOS:       10
-```
-
-Fact collection takes 2-3 seconds for a single, modern IOS/XE device. That will vary, however, depending on the complexity of the config and the firmware versions. Older firmware versions perform far slower (5-10 seconds).
-
-And other network families differ entirely. Compared to IOS completing a simple `show run all` in 2-3 seconds, NXOS can 10-15 seconds, IOS-XR often 8-12 seconds, EOS around 6-10 seconds, etc…
 
 --------------
 
@@ -255,7 +239,7 @@ In the pursuit of scaling Ansible/Tower to manage large network device inventori
 
   1. Frequency and extent of orchestrating/scheduling device changes
   2. Device configuration size (raw text output from `show run`, etc..)
-  3. Inventory sizes and devices families, e.g. IOS, NXOS, XR
+  3. Inventory sizes and devices families, e.g. IOS, NXOS, XR, Linux, etc...
   4. Ansible network facts modules, parsers, and fact caching
 
 ##### Frequency and extent of orchestrating/scheduling device changes
