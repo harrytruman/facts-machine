@@ -1,0 +1,32 @@
+---
+collections:
+
+- name: cisco.ios
+  source: https://galaxy.ansible.com/
+
+- name: cisco.nxos
+  source: https://galaxy.ansible.com/
+
+- name: cisco.ios-xr
+  source: https://galaxy.ansible.com/
+
+- name: cisco.asr
+  source: https://galaxy.ansible.com/
+
+- name: cisco.asa
+  source: https://galaxy.ansible.com/
+
+- name: f5networks.f5_modules
+  source: https://galaxy.ansible.com/
+
+- name: arista.eos
+  source: https://galaxy.ansible.com/
+
+- name: junipernetworks.junos
+  source: https://galaxy.ansible.com/
+
+- name: vyos.vyos
+  source: https://galaxy.ansible.com/
+
+- name: community.routeros
+  source: https://galaxy.ansible.com/
