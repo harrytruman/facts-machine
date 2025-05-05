@@ -1,0 +1,7 @@
+---
+- name: collect all facts
+  community.routeros.facts:
+    gather_subset: all
+
+- name: export running config
+  ansible.builtin.command: /export
