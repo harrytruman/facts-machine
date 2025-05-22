@@ -1,0 +1,8 @@
+[all]
+{{ lab_cisco_ios }} ansible_ssh_private_key_file=/Users/potus33/.ssh/net_lab_cred
+{{ lab_cisco_nxos }} ansible_ssh_private_key_file=/Users/potus33/.ssh/net_lab_cred
+{{ lab_cisco_iosxr }} ansible_ssh_private_key_file=/Users/potus33/.ssh/net_lab_cred
+{{ lab_cisco_junos }} ansible_ssh_private_key_file=/Users/potus33/.ssh/net_lab_cred
+
+#[all:vars]
+#ansible_ssh_user=ec2-user
