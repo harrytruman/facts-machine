@@ -5,15 +5,17 @@
   connection: "{{ ansible_connection | default(network_cli) }}"
 
   roles:
+    # gather facts from individual network hosts
     - role: network_facts
 
   tasks:
+    # create or update host info in netbox
     - name: create device within netbox
       netbox.netbox.netbox_device:
-        netbox_url: https://1.2.3.4
-        netbox_token: "2db5b3de82f85e25ce1f78a891bh1272a"
+        netbox_url: "{{ netbox_url }}"
+        netbox_token: "{{ netbox_token }}"
         data:
           name: "{{ item }}"
-          comments: Updated by Ansible “{{ hostvars[item]['ansible_facts']['ansible_net_serialnum'] }}”
+          comments: Updated by Ansible “{{ hostvars['item']['ansible_facts']['ansible_net_serialnum'] }}”
         state: present
       loop: "{{ groups['all'] }}"
