@@ -1,0 +1,8 @@
+---
+- name: backup configs to external files
+  hosts: "{{ hosts | default('all') | lower }}"
+  gather_facts: no
+  connection: "{{ ansible_connection | default(network_cli) }}"
+
+  roles:
+    - role: network_backup
