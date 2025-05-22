@@ -1,3 +1,4 @@
+# This is a template I generate for my lab/test devices
 [all]
 {{ lab_cisco_ios }} ansible_ssh_private_key_file=/Users/potus33/.ssh/net_lab_cred
 {{ lab_cisco_nxos }} ansible_ssh_private_key_file=/Users/potus33/.ssh/net_lab_cred
