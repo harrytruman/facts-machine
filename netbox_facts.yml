@@ -1,0 +1,19 @@
+---
+- name: collect network device facts to populate netbox inventory
+  hosts: "{{ hosts | default('all') | lower }}"
+  gather_facts: yes
+  connection: "{{ ansible_connection | default(network_cli) }}"
+
+  roles:
+    - role: network_facts
+
+  tasks:
+    - name: create device within netbox
+      netbox.netbox.netbox_device:
+        netbox_url: https://1.2.3.4
+        netbox_token: "2db5b3de82f85e25ce1f78a891bh1272a"
+        data:
+          name: "{{ item }}"
+          comments: Updated by Ansible “{{ hostvars[item]['ansible_facts']['ansible_net_serialnum'] }}”
+        state: present
+      loop: "{{ groups['all'] }}"
