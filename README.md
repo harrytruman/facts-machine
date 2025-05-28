@@ -27,7 +27,7 @@ VYOS
 
 --------------
 
-### Find Host Login Details
+### Find Your Host Login Details
 
 Ansible needs a few minimum details to get started. In particular, the `ansible_os` and `ansible_network_os` inventory variables to define the respective server or device OS (which should ideally be coming from a proper CMDB).
 
