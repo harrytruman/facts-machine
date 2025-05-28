@@ -137,13 +137,13 @@ ansible_facts:
 
 #### Fact Caching
 
-Ansible Facts can be cached too! Options include local file, memcached, Redis, and a plethora of others, via Ansible's [Cache Plugins](https://docs.ansible.com/ansible/latest/plugins/cache.html). And caching can be enabled with just the click button [in AWX and Tower](https://docs.ansible.com/ansible-tower/latest/html/userguide/job_templates.html#benefits-of-fact-caching), where you can then view facts via UI and API both.
+Ansible Facts can be cached too! Options include local file, memcached, Redis, and a plethora of others, via Ansible's [Cache Plugins](https://docs.ansible.com/ansible/latest/plugins/cache.html). And caching can be enabled with just the click button in AWX/AAP Job Templates, where you can then view facts via UI and API both.
 
 ![fact cache](https://docs.ansible.com/ansible-tower/latest/html/userguide/_images/job-templates-options-use-factcache.png)
 
 The combination of using network facts and fact caching can allow you to poll existing, in-memory data rather than parsing numerous additional commands to constantly check/refresh the device's running config.
 
-When using AAP/Tower, you can access cached facts for an individual host via:
+When using AAP, you can access cached facts for an individual host via:
 ```https://{{ aap_fqdn }}/api/v2/hosts/{{ inventory_host }}/ansible_facts```
 
 
@@ -212,7 +212,7 @@ Setting custom facts works particularly well for building out infrastructure che
 
 ## Ansible at Scale
 
-### How Ansible Works: Network vs OS
+### Network vs OS
 
 It’s important to differentiate that Ansible operates somewhat differently when running against network devices and cloud/API endpoints. When Ansible runs against a full OS like Linux, the remote hosts have Python/Bash, and they both receive commands and process their own data and state changes. As an example with a Linux host, a standard logging service configuration playbook would be fully executed on the remote host; upon completion, only task results are sent back to Ansible.
 
@@ -220,7 +220,7 @@ Network devices, on the other hand, rarely perform their own data processing. Un
 
 --------------
 
-### Network Facts: Speed and Performance
+### Speed and Performance
 
 Get into a habit of routinely checking your playbook runtimes. Basline peformance testing is your friend! This will display run times for individual tasks and the whole playbook run:
 
@@ -235,7 +235,7 @@ callback_whitelist = profile_tasks, timer
 
 Ansible helps solve the problem of communicating with every device on your network. But even though this is the 21st century, network command orchestration is still accomplished primarily by sending commands to devices and having those devices return output back to Ansible. Over and over. Rather than being able to rely on remote devices to do their own work, Ansible handles all network data processing as it’s received from remote devices. For most network environments, all data processing will to be performed locally on Ansible/Tower/AAP. 
 
-In the pursuit of scaling Ansible/Tower to manage large network device inventories, we must consider a number of factors that will directly impact job performance:
+In the pursuit of scaling Ansible to manage large network device inventories, we must consider a number of factors that will directly impact job performance:
 
   1. Frequency and extent of orchestrating/scheduling device changes
   2. Device configuration size (raw text output from `show run`, etc..)
@@ -243,7 +243,7 @@ In the pursuit of scaling Ansible/Tower to manage large network device inventori
   4. Ansible network facts modules, parsers, and fact caching
 
 ##### Frequency and extent of orchestrating/scheduling device changes
-With any large inventory, there comes a balancing act between scheduling configuration changes and avoiding resource contention. At a high level, this can be as simple as benchmarking job run times with Tower resource loads, and setting job template forks accordingly. When creating new network automation roles, it’s important to establish solid development practices to avoid potentially significant processing times.
+With any large inventory, there comes a balancing act between scheduling configuration changes and avoiding resource contention. At a high level, this can be as simple as benchmarking job run times with AAP resource loads, and setting job template forks accordingly. When creating new network automation roles, it’s important to establish solid development practices to avoid potentially significant processing times.
 
 ##### Device configuration size
 Most network automation roles will be utilizing Ansible facts derived from device configs. By looking at the raw device config sizes, such as the text output from `show run`, we can establish a rough estimate of memory usage per-host during large jobs.
@@ -252,14 +252,14 @@ Most network automation roles will be utilizing Ansible facts derived from devic
 Due to the large inventory size and the likelihood of significant inventory metadata, it’s critical to ensure that inventories are broken into smaller groups -- group sizes of 5,000 or less are highly recommended. Additionally, it’s important to note that device types/families perform noticeably faster/slower than others. IOS, for instance, is often 3-4 faster than NXOS.
 
 ##### Implementation and availability of Ansible network facts
-Ansible can collect device facts -- useful variables about remote hosts that can be used in playbooks. Additionally, these facts can be cached in Tower. The combination of using network facts with the fact cache can significantly increase Tower job speed and reduce processing loads.
+Ansible can collect device facts -- useful variables about remote hosts that can be used in playbooks. Additionally, these facts can be cached in AAP. The combination of using network facts with the fact cache can significantly increase AAP job speed and reduce processing loads.
 
 --------------
 
 ## Storing and Using Facts
 
-Unless your clusters have significant free resources to spare, Tower is not ideal for collecting, storing, *and* retrieving facts in environments with constant jobs running against large inventories. Simply put, processing all of these local facts **while** running a full cluster will put a tremendous strain on Tower.
+Unless your clusters have significant free resources to spare, AAP is not ideal for collecting, storing, *and* retrieving facts in environments with constant jobs running against large inventories. Simply put, processing all of these local facts **while** running a full cluster will put a tremendous strain on AAP.
 
-Any CMDB and Source of Truth should be implemented external to Tower. I use something like an ELK cluster to store Tower logs and Ansible Facts:
+Any CMDB and Source of Truth should be implemented external to AAP. And it's highly suggested to use something like an ELK cluster to store AAP logs and Ansible Facts:
 
 https://github.com/harrytruman/elk-ansible
