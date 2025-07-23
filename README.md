@@ -231,9 +231,11 @@ callback_whitelist = profile_tasks, timer
 
 --------------
 
-### Ansible and Fact Collection at Scale
+### Ansible Networking at Scale
 
-Ansible helps solve the problem of communicating with every device on your network. But even though this is the 21st century, network command orchestration is still accomplished primarily by sending commands to devices and having those devices return output back to Ansible. Over and over. Rather than being able to rely on remote devices to do their own work, Ansible handles all network data processing as it’s received from remote devices. For most network environments, all data processing will to be performed locally on Ansible/Tower/AAP. 
+Ansible helps solve the problem of communicating with every device on your network. But even though this is the 21st century, network orchestration is still accomplished primarily by sending commands to devices, and awaiting their returning output back to Ansible (or anything else). Over. And over. And over...
+
+Rather than being able to rely on remote devices to do their own work, Ansible handles *all* network data processing -- as it’s received -- from remote devices. Which means all data processing will to be performed locally on Ansible/AWX/Tower/AAP. 
 
 In the pursuit of scaling Ansible to manage large network device inventories, we must consider a number of factors that will directly impact job performance:
 
