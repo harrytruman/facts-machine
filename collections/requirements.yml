@@ -1,32 +1,21 @@
 ---
 collections:
 
+- name: ansible.netcommon
+- name: ansible.posix
+- name: ansible.utils
+
 - name: cisco.ios
-  source: https://galaxy.ansible.com/
-
 - name: cisco.nxos
-  source: https://galaxy.ansible.com/
-
 - name: cisco.ios-xr
-  source: https://galaxy.ansible.com/
-
-- name: cisco.asr
-  source: https://galaxy.ansible.com/
-
-- name: cisco.asa
-  source: https://galaxy.ansible.com/
-
-- name: f5networks.f5_modules
-  source: https://galaxy.ansible.com/
+#- name: cisco.asr
+#- name: cisco.asa
 
 - name: arista.eos
-  source: https://galaxy.ansible.com/
-
 - name: junipernetworks.junos
-  source: https://galaxy.ansible.com/
-
+- name: f5networks.f5_module
 - name: vyos.vyos
-  source: https://galaxy.ansible.com/
-
-- name: netbox.netbox
-  source: https://galaxy.ansible.com/
+- name: fortinet.fortios
+#- name: netbox.netbox
+#- name: community.routeros
+#- name: infoblox.nios_modules
