@@ -1,8 +1,10 @@
 ---
-ansible_network_os: linux
-#cli_nexus_long_timeout:
-#  host: "{{ inventory_hostname }}"
-#  username: "{{ ansible_username }}"
-#  password: "{{ ansible_password }}"
-#  transport: cli
-#  timeout: 180
+#ansible_network_os: linux
+
+# RouterOS
+#ansible_connection: ansible.netcommon.network_cli
+#ansible_network_os: community.routeros.routeros
+#ansible_network_cli_ssh_type: libssh
+#ansible_ssh_pass: "{{ ansible_password }}"
+#ansible_user: "{{ ansible_username }}"
+#ansible_host: “{{ ip_or_dns_goes_here }}”
