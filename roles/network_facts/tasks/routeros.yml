@@ -4,4 +4,4 @@
     gather_subset: all
 
 - name: export running config
-  ansible.builtin.command: /export
+  community.routeros.command: /export
