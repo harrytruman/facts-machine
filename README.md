@@ -1,6 +1,6 @@
 # Facts Machine
 
-## Network Facts, Configs, and Backups with Ansible
+## Facts, Configs, and Backups with Ansible
 
 The Facts Machine parses network configs into a data model. This role gathers native Ansible Facts or sets custom facts to parse command output and convert device configurations into code.
 
