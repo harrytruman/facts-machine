@@ -232,21 +232,21 @@ callback_whitelist = profile_tasks, timer
 
 --------------
 
-### Ansible Networking at Scale
+### Ansible Facts + Networking at Scale
 
 Ansible helps solve the problem of communicating with every device on your network. But even though this is the 21st century, network orchestration is still accomplished primarily by sending commands to devices, and awaiting their returning output back to Ansible (or anything else). Over. And over. And over...
 
 Rather than being able to rely on remote devices to do their own work, Ansible handles *all* network data processing -- as it’s received -- from remote devices. Which means all data processing will to be performed locally on Ansible/AWX/Tower/AAP. 
 
-In the pursuit of scaling Ansible to manage large network device inventories, we must consider a number of factors that will directly impact job performance:
+In the pursuit of scaling Ansible to manage large network device inventories -- especially with regard to large scale fact collection -- there are a number of factors that will directly impact job performance:
 
-  1. Frequency and extent of orchestrating/scheduling device changes
+  1. Frequency and extent of orchestrating/scheduling gathering facts, making and validating changes, etc...
   2. Device configuration size (raw text output from `show run`, etc..)
   3. Inventory sizes and devices families, e.g. IOS, NXOS, XR, Linux, etc...
   4. Ansible network facts modules, parsers, and fact caching
 
 ##### Frequency and extent of orchestrating/scheduling device changes
-With any large inventory, there comes a balancing act between scheduling configuration changes and avoiding resource contention. At a high level, this can be as simple as benchmarking job run times with AAP resource loads, and setting job template forks accordingly. When creating new network automation roles, it’s important to establish solid development practices to avoid potentially significant processing times.
+With any large inventory, there comes a balancing act between scheduling fact collection and configuration changes to avoid resource contention. At a high level, this can be as simple as benchmarking job run times with AAP resource loads, and setting job template forks accordingly. When creating new network automation roles, it’s important to establish solid development practices to avoid potentially significant processing times.
 
 ##### Device configuration size
 Most network automation roles will be utilizing Ansible facts derived from device configs. By looking at the raw device config sizes, such as the text output from `show run`, we can establish a rough estimate of memory usage per-host during large jobs.
@@ -254,7 +254,7 @@ Most network automation roles will be utilizing Ansible facts derived from devic
 ##### Inventory sizes and devices families, e.g. IOS, NXOS, XR
 Due to the large inventory size and the likelihood of significant inventory metadata, it’s critical to ensure that inventories are broken into smaller groups -- group sizes of 5,000 or less are highly recommended. Additionally, it’s important to note that device types/families perform noticeably faster/slower than others. IOS, for instance, is often 3-4 faster than NXOS.
 
-##### Implementation and availability of Ansible network facts
+##### Implementation and availability of a Fact Cache
 Ansible can collect device facts -- useful variables about remote hosts that can be used in playbooks. Additionally, these facts can be cached in AAP. The combination of using network facts with the fact cache can significantly increase AAP job speed and reduce processing loads.
 
 --------------
