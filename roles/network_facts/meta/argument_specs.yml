@@ -1,0 +1,147 @@
+---
+argument_specs:
+  main:
+    short_description: Auto-generated specs for network_facts role - main entry point
+    description:
+      - Automatically generated argument specification for the network_facts role.
+      - 'Entry point: main'
+      - 'Includes task files: {{ item }}'
+  aireos:
+    short_description: Auto-generated specs for network_facts role - aireos entry point
+    description:
+      - Automatically generated argument specification for the network_facts role.
+      - 'Entry point: aireos'
+    options:
+      cli:
+        description: Variable used in aireos entry point
+        type: str
+        required: true
+        version_added: 1.0.0
+  aruba:
+    short_description: Auto-generated specs for network_facts role - aruba entry point
+    description:
+      - Automatically generated argument specification for the network_facts role.
+      - 'Entry point: aruba'
+    options:
+      cli:
+        description: Variable used in aruba entry point
+        type: str
+        required: true
+        version_added: 1.0.0
+      output_wlan:
+        description: Variable used in aruba entry point
+        type: str
+        required: true
+        version_added: 1.0.0
+  eos:
+    short_description: Auto-generated specs for network_facts role - eos entry point
+    description:
+      - Automatically generated argument specification for the network_facts role.
+      - 'Entry point: eos'
+  f5-os:
+    short_description: Auto-generated specs for network_facts role - f5-os entry point
+    description:
+      - Automatically generated argument specification for the network_facts role.
+      - 'Entry point: f5-os'
+      - 'Includes task files: -'
+  fortimgr:
+    short_description: Auto-generated specs for network_facts role - fortimgr entry point
+    description:
+      - Automatically generated argument specification for the network_facts role.
+      - 'Entry point: fortimgr'
+    options:
+      fmgr_connection:
+        description: Variable used in fortimgr entry point
+        type: str
+        required: true
+        version_added: 1.0.0
+  ios:
+    short_description: Auto-generated specs for network_facts role - ios entry point
+    description:
+      - Automatically generated argument specification for the network_facts role.
+      - 'Entry point: ios'
+  iosxr:
+    short_description: Auto-generated specs for network_facts role - iosxr entry point
+    description:
+      - Automatically generated argument specification for the network_facts role.
+      - 'Entry point: iosxr'
+    options:
+      cli:
+        description: Variable used in iosxr entry point
+        type: str
+        required: true
+        version_added: 1.0.0
+  junos:
+    short_description: Auto-generated specs for network_facts role - junos entry point
+    description:
+      - Automatically generated argument specification for the network_facts role.
+      - 'Entry point: junos'
+  linux:
+    short_description: Auto-generated specs for network_facts role - linux entry point
+    description:
+      - Automatically generated argument specification for the network_facts role.
+      - 'Entry point: linux'
+    options:
+      snow_record_number:
+        description: Variable used in linux entry point
+        type: str
+        required: true
+        version_added: 1.0.0
+      sot_tla:
+        description: Variable used in linux entry point
+        type: str
+        required: true
+        version_added: 1.0.0
+  nxos:
+    short_description: Auto-generated specs for network_facts role - nxos entry point
+    description:
+      - Automatically generated argument specification for the network_facts role.
+      - 'Entry point: nxos'
+    options:
+      cli:
+        description: Variable used in nxos entry point
+        type: str
+        required: true
+        version_added: 1.0.0
+      cli_nexus_long_timeout:
+        description: Variable used in nxos entry point
+        type: str
+        required: true
+        version_added: 1.0.0
+      mgmt_interface_name:
+        description: Variable used in nxos entry point
+        type: str
+        required: true
+        version_added: 1.0.0
+  paloalto:
+    short_description: Auto-generated specs for network_facts role - paloalto entry point
+    description:
+      - Automatically generated argument specification for the network_facts role.
+      - 'Entry point: paloalto'
+    options:
+      cli_password:
+        description: Variable used in paloalto entry point
+        type: str
+        required: true
+        version_added: 1.0.0
+      cli_username:
+        description: Variable used in paloalto entry point
+        type: str
+        required: true
+        version_added: 1.0.0
+      system:
+        description: Variable used in paloalto entry point
+        type: str
+        required: true
+        version_added: 1.0.0
+  routeros:
+    short_description: Auto-generated specs for network_facts role - routeros entry point
+    description:
+      - Automatically generated argument specification for the network_facts role.
+      - 'Entry point: routeros'
+  vyos:
+    short_description: Auto-generated specs for network_facts role - vyos entry point
+    description:
+      - Automatically generated argument specification for the network_facts role.
+      - 'Entry point: vyos'
+...

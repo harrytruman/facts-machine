@@ -1,0 +1,142 @@
+---
+argument_specs:
+  main:
+    short_description: Auto-generated specs for network_backup role - main entry point
+    description:
+      - Automatically generated argument specification for the network_backup role.
+      - 'Entry point: main'
+      - 'Includes task files: {{ ansible_network_os }}'
+    options:
+      network_backup_path:
+        description: 'resource name (used in task) (default: ''/tmp/backup'') (defined in vars)'
+        type: path
+        default: /tmp/backup
+        version_added: 1.0.0
+  aireos:
+    short_description: Auto-generated specs for network_backup role - aireos entry point
+    description:
+      - Automatically generated argument specification for the network_backup role.
+      - 'Entry point: aireos'
+    options:
+      network_backup_path:
+        description: 'resource name (used in task) (default: ''/tmp/backup'') (defined in vars)'
+        type: path
+        default: /tmp/backup
+        version_added: 1.0.0
+  aruba:
+    short_description: Auto-generated specs for network_backup role - aruba entry point
+    description:
+      - Automatically generated argument specification for the network_backup role.
+      - 'Entry point: aruba'
+    options:
+      network_backup_path:
+        description: 'resource name (used in task) (default: ''/tmp/backup'') (defined in vars)'
+        type: path
+        default: /tmp/backup
+        version_added: 1.0.0
+  eos:
+    short_description: Auto-generated specs for network_backup role - eos entry point
+    description:
+      - Automatically generated argument specification for the network_backup role.
+      - 'Entry point: eos'
+    options:
+      network_backup_path:
+        description: 'resource name (used in task) (default: ''/tmp/backup'') (defined in vars)'
+        type: path
+        default: /tmp/backup
+        version_added: 1.0.0
+  f5-os:
+    short_description: Auto-generated specs for network_backup role - f5-os entry point
+    description:
+      - Automatically generated argument specification for the network_backup role.
+      - 'Entry point: f5-os'
+      - 'Includes task files: -'
+    options:
+      network_backup_path:
+        description: 'resource name (used in task) (default: ''/tmp/backup'') (defined in vars)'
+        type: path
+        default: /tmp/backup
+        version_added: 1.0.0
+  fortimgr:
+    short_description: Auto-generated specs for network_backup role - fortimgr entry point
+    description:
+      - Automatically generated argument specification for the network_backup role.
+      - 'Entry point: fortimgr'
+    options:
+      network_backup_path:
+        description: 'resource name (used in task) (default: ''/tmp/backup'') (defined in vars)'
+        type: path
+        default: /tmp/backup
+        version_added: 1.0.0
+      vdom:
+        description: Variable used in fortimgr entry point
+        type: str
+        required: true
+        version_added: 1.0.0
+  ios:
+    short_description: Auto-generated specs for network_backup role - ios entry point
+    description:
+      - Automatically generated argument specification for the network_backup role.
+      - 'Entry point: ios'
+    options:
+      network_backup_path:
+        description: 'resource name (used in task) (default: ''/tmp/backup'') (defined in vars)'
+        type: path
+        default: /tmp/backup
+        version_added: 1.0.0
+  iosxr:
+    short_description: Auto-generated specs for network_backup role - iosxr entry point
+    description:
+      - Automatically generated argument specification for the network_backup role.
+      - 'Entry point: iosxr'
+    options:
+      network_backup_path:
+        description: 'resource name (used in task) (default: ''/tmp/backup'') (defined in vars)'
+        type: path
+        default: /tmp/backup
+        version_added: 1.0.0
+  junos:
+    short_description: Auto-generated specs for network_backup role - junos entry point
+    description:
+      - Automatically generated argument specification for the network_backup role.
+      - 'Entry point: junos'
+    options:
+      network_backup_path:
+        description: 'resource name (used in task) (default: ''/tmp/backup'') (defined in vars)'
+        type: path
+        default: /tmp/backup
+        version_added: 1.0.0
+  linux:
+    short_description: Auto-generated specs for network_backup role - linux entry point
+    description:
+      - Automatically generated argument specification for the network_backup role.
+      - 'Entry point: linux'
+    options:
+      network_backup_path:
+        description: 'resource name (used in task) (default: ''/tmp/backup'') (defined in vars)'
+        type: path
+        default: /tmp/backup
+        version_added: 1.0.0
+  nxos:
+    short_description: Auto-generated specs for network_backup role - nxos entry point
+    description:
+      - Automatically generated argument specification for the network_backup role.
+      - 'Entry point: nxos'
+    options:
+      network_backup_path:
+        description: 'resource name (used in task) (default: ''/tmp/backup'') (defined in vars)'
+        type: path
+        default: /tmp/backup
+        version_added: 1.0.0
+  vyos:
+    short_description: Auto-generated specs for network_backup role - vyos entry point
+    description:
+      - Automatically generated argument specification for the network_backup role.
+      - 'Entry point: vyos'
+    options:
+      network_backup_path:
+        description: 'resource name (used in task) (default: ''/tmp/backup'') (defined in vars)'
+        type: path
+        default: /tmp/backup
+        version_added: 1.0.0
+...
